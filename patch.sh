@@ -48,9 +48,9 @@ checkadb() {
 }
 
 checkyt() {
-    if ! adb shell cmd package list packages | grep -q 'com.google.android.youtube'; then
-      printf '%b\n' "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
-      exit 1
+    if [ ! "$(adb shell cmd package list packages | grep -o 'com.google.android.youtube')" ]; then
+        printf '%b\n' "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
+        exit 1
     fi
 }
 
@@ -71,8 +71,6 @@ remove_old() {
     if [ ! "$(command -v find)" ]; then
         [ ! -f "$cli_filename" ] && [ -f "revanced-cli-*-all.jar" ] && (printf '%b\n' "${RED}removing old revanced-cli${NC}" && rm -f revanced-cli-*.jar)
         [ ! -f "$patches_filename" ] && [ -f "revanced-patches-*-all.jar" ] && (printf '%b\n' "${RED}removing old revanced-patches${NC}" && rm -f revanced-patches-*.jar)
-        [ ! -f "$apk_filename" ] && [ -f "YouTube-*.apk" ] && (printf '%b\n' "${RED}removing old youtube${NC}" && rm YouTube-17*.apk)
-        [ ! -f "$apk_filename" ] && [ -f "YouTube-Music-*.apk" ] && (printf '%b\n' "${RED}removing old youtube-music${NC}" && rm YouTube-Music-*.apk)
         rm -f $integrations_filename
     else
         find . -maxdepth 1 -type f \( -name "revanced-*.jar" -or -name "$integrations_filename" \) ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$apk_filename" \) -delete
@@ -150,22 +148,16 @@ main() {
         printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds${NC}"
         sleep 5s
         checkadb
-        checkyt
     fi
 
     ## what should we patch
-    if [ "$what_to_patch" = "youtube" ]; then
-        [ -z "$apk_version" ] && apk_version=17.27.39
-        apk_filename=YouTube-$apk_version.apk
-        output_apk_name=revanced-$apk_version-$root_text.apk
-    elif [ "$what_to_patch" = "youtube-music" ]; then
-        [ -z "$apk_version" ] && apk_version=5.14.53
-        apk_filename=YouTube-Music-$apk_version.apk
-        output_apk_name=revanced-music-$apk_version-$root_text.apk
+    if [ "$what_to_patch" = "twitter" ]; then
+        apk_filename=twitter-9-51-0-release-0.apk
+        output_apk_name=revanced-twitter-9-51-0-release-0.apk
     fi
 
     ## link to download $what_to_patch
-    apk_link=https://github.com/XDream8/revanced-creator/releases/download/v0.1/$apk_filename
+    apk_link=https://github.com/Phongvngg1/revanced-creator/releases/download/v0.1/twitter-9-51-0-release-0.apk
 
     ## downloader
     if [ -z "$downloader" ] && [ "$(command -v curl)" ]; then
@@ -199,6 +191,13 @@ main() {
 
     remove_old
     download_needed
+
+    if [ $nonroot = 0 ]; then
+        printf '%b\n' "${BLUE}root variant: installing stock youtube-$apk_version first${NC}"
+        adb install -r $apk_filename || ( printf '%b\n' "${RED}install failed, exiting!${NC}" && exit 1 && exit 1 )
+        checkyt
+    fi
+
     patch
     exit 0
 }
