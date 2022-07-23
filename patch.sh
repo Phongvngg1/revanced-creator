@@ -48,7 +48,7 @@ checkadb() {
 }
 
 checkyt() {
-    if [ ! "$(adb shell cmd package list packages | grep -o 'com.google.android.youtube')" ]; then
+    if [ ! "$(adb shell cmd package list packages | grep -o 'com.twitter.android')" ]; then
         printf '%b\n' "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
         exit 1
     fi
