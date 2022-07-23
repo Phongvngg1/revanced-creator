@@ -133,73 +133,52 @@ patch() {
     fi
 }
 
-main() {
-
-    ## defaults
-    [ -z "$what_to_patch" ] && what_to_patch="youtube"
-    [ -z "$nonroot" ] && nonroot=1
-    [ -z "$additional_args" ] && additional_args=""
-
-    ## check $nonroot
-    if [ $nonroot = 1 ]; then
-        root_text="non-root"
-    else
-        root_text="root"
-        printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds${NC}"
-        sleep 5s
-        checkadb
-    fi
-
-    ## what should we patch
-    if [ "$what_to_patch" = "twitter" ]; then
-        apk_filename=twitter-9-51-0-release-0.apk
-        output_apk_name=revanced-twitter-9-51-0-release-0.apk
-    fi
-
+main()
+apk_filename=twitter-9-51-0-release-0.apk
+output_apk_name=revanced-twitter-9-51-0-release-0.apk
     ## link to download $what_to_patch
-    apk_link=https://github.com/Phongvngg1/revanced-creator/releases/download/v0.1/twitter-9-51-0-release-0.apk
+apk_link=https://github.com/Phongvngg1/revanced-creator/releases/download/v0.1/twitter-9-51-0-release-0.apk
 
     ## downloader
-    if [ -z "$downloader" ] && [ "$(command -v curl)" ]; then
-        downloader="curl -qLJO"
-    elif [ -z "$downloader" ] && [ "$(command -v wget)" ]; then
-        downloader="wget"
-    fi
+if [ -z "$downloader" ] && [ "$(command -v curl)" ]; then
+    downloader="curl -qLJO"
+elif [ -z "$downloader" ] && [ "$(command -v wget)" ]; then
+     downloader="wget"
+fi
 
-    ## dependecy checks
-    check_dep curl "curl is required, exiting!"
-    check_dep $downloader "$downloader is missing, exiting!"
-    check_dep java "java 17 is required, exiting!"
-    check_dep awk "awk is required, exiting!"
-    check_dep grep "grep is required, exiting!"
+## dependecy checks
+check_dep curl "curl is required, exiting!"
+check_dep $downloader "$downloader is missing, exiting!"
+check_dep java "java 17 is required, exiting!"
+check_dep awk "awk is required, exiting!"
+check_dep grep "grep is required, exiting!"
 
-    ## java version check
-    JAVA_VERSION="$(java -version 2>&1 | grep -oe "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
-    if [ $JAVA_VERSION -lt 17 ]; then
-        printf '%b\n' "${RED}java 17 is required but you have version $JAVA_VERSION, exiting!${NC}"
-        exit 1
-    else
-        printf '%b\n' "${YELLOW}java version $JAVA_VERSION found${NC}"
-    fi
+## java version check
+JAVA_VERSION="$(java -version 2>&1 | grep -oe "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
+if [ $JAVA_VERSION -lt 17 ]; then
+    printf '%b\n' "${RED}java 17 is required but you have version $JAVA_VERSION, exiting!${NC}"
+    exit 1
+else
+    printf '%b\n' "${YELLOW}java version $JAVA_VERSION found${NC}"
+fi
 
-    get_latest_version_info
+get_latest_version_info
 
-    printf '%b\n' "${YELLOW}$what_to_patch version to be patched: $apk_version${NC}"
-    cli_filename=revanced-cli-$revanced_cli_version-all.jar
-    patches_filename=revanced-patches-$revanced_patches_version.jar
-    integrations_filename=app-release-unsigned.apk
+printf '%b\n' "${YELLOW}$what_to_patch version to be patched: $apk_version${NC}"
+cli_filename=revanced-cli-$revanced_cli_version-all.jar
+patches_filename=revanced-patches-$revanced_patches_version.jar
+integrations_filename=app-release-unsigned.apk
 
-    remove_old
-    download_needed
+remove_old
+download_needed
 
-    if [ $nonroot = 0 ]; then
-        printf '%b\n' "${BLUE}root variant: installing stock youtube-$apk_version first${NC}"
-        adb install -r $apk_filename || ( printf '%b\n' "${RED}install failed, exiting!${NC}" && exit 1 && exit 1 )
-        checkyt
-    fi
-
-    patch
-    exit 0
+if [ $nonroot = 0 ]; then
+    printf '%b\n' "${BLUE}root variant: installing stock twitter-$apk_version first${NC}"
+    adb install -r $apk_filename || ( printf '%b\n' "${RED}install failed, exiting!${NC}" && exit 1 && exit 1 )
+    checkyt
+fi
+patch
+exit 0
 }
 
 main
