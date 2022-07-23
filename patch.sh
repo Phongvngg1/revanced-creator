@@ -133,12 +133,7 @@ patch() {
     fi
 }
 
-main()
-apk_filename=twitter-9-51-0-release-0.apk
-output_apk_name=revanced-twitter-9-51-0-release-0.apk
-    ## link to download $what_to_patch
-apk_link=https://github.com/Phongvngg1/revanced-creator/releases/download/v0.1/twitter-9-51-0-release-0.apk
-
+main() {
     ## downloader
 if [ -z "$downloader" ] && [ "$(command -v curl)" ]; then
     downloader="curl -qLJO"
