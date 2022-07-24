@@ -101,23 +101,28 @@ build_apk() {
 		-a $apk_filename \
 		-c \
 		-o $output_apk_name \
-		-b $patches_filename \
-		-m $integrations_filename"
+		-b $patches_filename "
     if [ "$1" ] && [ ! "$additional_args" = "" ]; then
         # root with $additional_args
         $base_cmd \
+            -m $integrations_filename \
             $additional_args \
-            $1
+            $1 
     elif [ "$1" ] && [ "$additional_args" = "" ]; then
         # root
         $base_cmd \
+            -m $integrations_filename \
             $1
     elif [ ! "$1" ] && [ ! "$additional_args" = "" ]; then
         # non-root with $additional_args
         $base_cmd \
+            -m $integrations_filename \
             $additional_args
     elif [ ! "$1" ] && [ "$additional_args" = "" ]; then
         # non-root
+        $base_cmd \
+            -m $integrations_filename
+    elif [ ! "$1" ] && [ ! "$apk_filename" = "twitter" ]; then
         $base_cmd
     fi
 }
