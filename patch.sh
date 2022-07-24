@@ -166,6 +166,7 @@ main() {
     elif [ "$what_to_patch" = "twitter" ]; then
         [ -z "$apk_version" ] && apk_version=9.41.0
         apk_filename=Twitter-$apk_version.apk
+        output_apk_name=twiiter-$apk_version.apk
     elif [ "$what_to_patch" = "youtube-music" ]; then
         [ -z "$apk_version" ] && apk_version=5.14.53
         apk_filename=YouTube-Music-$apk_version.apk
