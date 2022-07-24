@@ -174,7 +174,7 @@ main() {
     fi
 
     ## link to download $what_to_patch
-    apk_link=https://github.com/Phongvngg1/revanced-creator/releases/tag/v0.1/$apk_filename
+    apk_link=https://github.com/Phongvngg1/revanced-creator/releases/download/v0.1/$apk_filename
 
     ## downloader
     if [ -z "$downloader" ] && [ "$(command -v curl)" ]; then
