@@ -164,7 +164,7 @@ main() {
         apk_filename=YouTube-$apk_version.apk
         output_apk_name=revanced-$apk_version-$root_text.apk
     elif [ "$what_to_patch" = "twitter" ]; then
-        [ -z "$apk_version" ] && apk_version=9.41.0
+        [ -z "$apk_version" ] && apk_version=9.51.0
         apk_filename=Twitter-$apk_version.apk
         output_apk_name=twiiter-$apk_version.apk
     elif [ "$what_to_patch" = "youtube-music" ]; then
