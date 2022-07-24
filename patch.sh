@@ -71,8 +71,8 @@ remove_old() {
     if [ ! "$(command -v find)" ]; then
         [ ! -f "$cli_filename" ] && [ -f "revanced-cli-*-all.jar" ] && (printf '%b\n' "${RED}removing old revanced-cli${NC}" && rm -f revanced-cli-*.jar)
         [ ! -f "$patches_filename" ] && [ -f "revanced-patches-*-all.jar" ] && (printf '%b\n' "${RED}removing old revanced-patches${NC}" && rm -f revanced-patches-*.jar)
-        [ ! -f "$apk_filename" ] && [ -f "YouTube-*.apk" ] && (printf '%b\n' "${RED}removing old youtube${NC}" && rm YouTube-17*.apk)
-        [ ! -f "$apk_filename" ] && [ -f "YouTube-Music-*.apk" ] && (printf '%b\n' "${RED}removing old youtube-music${NC}" && rm YouTube-Music-*.apk)
+        [ ! -f "$apk_filename" ] && [ -f "Youtube-*.apk" ] && (printf '%b\n' "${RED}removing old youtube${NC}" && rm YouTube-17*.apk)
+        [ ! -f "$apk_filename" ] && [ -f "Youtube-Music-*.apk" ] && (printf '%b\n' "${RED}removing old youtube-music${NC}" && rm YouTube-Music-*.apk)
         [ ! -f "$apk_filename" ] && [ -f "Twitter-*.apk" ] && (printf '%b\n' "${RED}removing old youtube-music${NC}" && rm Twitter-*.apk)
         rm -f $integrations_filename
     else
@@ -161,7 +161,7 @@ main() {
     ## what should we patch
     if [ "$what_to_patch" = "youtube" ]; then
         [ -z "$apk_version" ] && apk_version=17.27.39
-        apk_filename=YouTube-$apk_version.apk
+        apk_filename=Youtube-$apk_version.apk
         output_apk_name=revanced-$apk_version-$root_text.apk
     elif [ "$what_to_patch" = "twitter" ]; then
         [ -z "$apk_version" ] && apk_version=9.51.0
